@@ -1,6 +1,6 @@
 package org.example.rental_agreement.service;
 
-import org.example.rental_agreement.dto.CheckoutRequest;
+import org.example.rental_agreement.dto.RentalRequest;
 import org.example.rental_agreement.dto.RentalAgreement;
 import org.example.rental_agreement.model.Tool;
 import org.springframework.stereotype.Service;
@@ -17,24 +17,24 @@ import java.util.Date;
 public class RentalService {
     /**
      * Generates a rental agreement.
-     * @param checkoutRequest The request from the client
+     * @param rentalRequest The request from the client
      * @return the rental agreement
      * @throws IllegalArgumentException on bad inputs in the client request.
      */
-    public RentalAgreement generateRentalAgreement(CheckoutRequest checkoutRequest) throws IllegalArgumentException {
+    public RentalAgreement generateRentalAgreement(RentalRequest rentalRequest) throws IllegalArgumentException {
 
-        if (checkoutRequest.getRentalDayCount() < 1) {
+        if (rentalRequest.getRentalDayCount() < 1) {
             throw new IllegalArgumentException("Please select a rental day length of one day or greater.");
         }
-        if (checkoutRequest.getDiscountPercent() < 0 || checkoutRequest.getDiscountPercent() > 100) {
+        if (rentalRequest.getDiscountPercent() < 0 || rentalRequest.getDiscountPercent() > 100) {
             throw new IllegalArgumentException("Please select a discount percentage between 0 and 100.");
         }
 
-        Tool tool = Tool.valueOf(checkoutRequest.getToolCode());
+        Tool tool = Tool.valueOf(rentalRequest.getToolCode());
 
         // Get the number of chargeable days
-        long chargeableDays = DateService.getChargeableDays(checkoutRequest.getCheckoutDate(),
-                checkoutRequest.getRentalDayCount(),
+        long chargeableDays = DateService.getChargeableDays(rentalRequest.getCheckoutDate(),
+                rentalRequest.getRentalDayCount(),
                 tool.getToolType().isWeekdayCharge(),
                 tool.getToolType().isWeekendCharge(),
                 tool.getToolType().isHolidayCharge());
@@ -42,28 +42,28 @@ public class RentalService {
         double preDiscountCharge = chargeableDays * tool.getToolType().getDailyCharge().doubleValue();
         BigDecimal preDiscountChargeRounded = new BigDecimal(preDiscountCharge)
                 .setScale(2, RoundingMode.HALF_UP);
-        double discountAmount = preDiscountCharge * ((double)checkoutRequest.getDiscountPercent() / 100);
+        double discountAmount = preDiscountCharge * ((double) rentalRequest.getDiscountPercent() / 100);
         BigDecimal discountAmountRounded = new BigDecimal(discountAmount)
                 .setScale(2, RoundingMode.HALF_UP);
         BigDecimal finalCharge = new BigDecimal(preDiscountChargeRounded.doubleValue() - discountAmountRounded.doubleValue())
                 .setScale(2, RoundingMode.HALF_UP);
 
-        Date lastDate = DateService.getEndDate(checkoutRequest.getCheckoutDate(), checkoutRequest.getRentalDayCount());
+        Date lastDate = DateService.getEndDate(rentalRequest.getCheckoutDate(), rentalRequest.getRentalDayCount());
         // We want the due date to be on the last day of the rental, not the day after
         Date dueDate = DateService.addDays(lastDate, -1);
         RentalAgreement rentalAgreement = RentalAgreement.builder()
                 .toolCode(tool.toString())
-                .toolType(tool.getToolType().toString())
+                .toolType(tool.getTypeName())
                 .toolBrand(tool.getBrand())
-                .rentalDays(Duration.between(checkoutRequest.getCheckoutDate().toInstant(), lastDate.toInstant()).toDays())
-                .checkoutDate(checkoutRequest.getCheckoutDate())
+                .rentalDays(Duration.between(rentalRequest.getCheckoutDate().toInstant(), lastDate.toInstant()).toDays())
+                .checkoutDate(rentalRequest.getCheckoutDate())
                 .dueDate(dueDate)
                 .dailyRentalCharge(tool.getToolType().getDailyCharge())
                 .chargeDays(chargeableDays)
                 .preDiscountCharge(preDiscountChargeRounded)
                 .discountAmount(discountAmountRounded)
                 .finalCharge(finalCharge)
-                .discountPercent(checkoutRequest.getDiscountPercent())
+                .discountPercent(rentalRequest.getDiscountPercent())
                 .build();
         return rentalAgreement;
     }

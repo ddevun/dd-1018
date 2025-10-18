@@ -12,7 +12,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CheckoutRequest {
+public class RentalRequest {
     String toolCode;
     int rentalDayCount;
     int discountPercent;

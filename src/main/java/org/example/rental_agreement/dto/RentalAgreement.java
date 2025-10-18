@@ -30,6 +30,7 @@ public class RentalAgreement {
     BigDecimal finalCharge;
     int discountPercent;
 
+    @Override
     public String toString() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         StringBuilder builder = new StringBuilder();
