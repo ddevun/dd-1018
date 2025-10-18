@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  */
 public class RentalServiceTest {
 
-   static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+   static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yy");
     RentalService rentalService = new RentalService();
 
     /**
@@ -26,8 +26,8 @@ public class RentalServiceTest {
      * @throws ParseException
      */
     static Stream<Arguments> badTestData() throws ParseException {
-       return Stream.of(Arguments.of("JAKR", "2015-09-03", 5, 101),
-                        Arguments.of("JAKR", "2015-09-03", 0, 100));
+       return Stream.of(Arguments.of("JAKR", "09/03/15", 5, 101),
+                        Arguments.of("JAKR", "09/03/15", 0, 100));
     }
 
     /**
@@ -42,8 +42,8 @@ public class RentalServiceTest {
                        .toolType("Ladder")
                        .toolBrand("Werner")
                        .rentalDays(3)
-                       .checkoutDate(simpleDateFormat.parse("2020-07-02"))
-                       .dueDate(simpleDateFormat.parse("2020-07-04"))
+                       .checkoutDate(simpleDateFormat.parse("07/02/20"))
+                       .dueDate(simpleDateFormat.parse("07/04/20"))
                        .dailyRentalCharge(new BigDecimal("1.99"))
                        .chargeDays(2)
                        .preDiscountCharge(new BigDecimal("3.98"))
@@ -56,8 +56,8 @@ public class RentalServiceTest {
                        .toolType("Chainsaw")
                        .toolBrand("Stihl")
                        .rentalDays(5)
-                       .checkoutDate(simpleDateFormat.parse("2015-07-02"))
-                       .dueDate(simpleDateFormat.parse("2015-07-06"))
+                       .checkoutDate(simpleDateFormat.parse("07/02/15"))
+                       .dueDate(simpleDateFormat.parse("07/06/15"))
                        .dailyRentalCharge(new BigDecimal("1.49"))
                        .chargeDays(3)
                        .preDiscountCharge(new BigDecimal("4.47"))
@@ -70,8 +70,8 @@ public class RentalServiceTest {
                        .toolType("Jackhammer")
                        .toolBrand("DeWalt")
                        .rentalDays(6)
-                       .checkoutDate(simpleDateFormat.parse("2015-09-03"))
-                       .dueDate(simpleDateFormat.parse("2015-09-08"))
+                       .checkoutDate(simpleDateFormat.parse("09/03/15"))
+                       .dueDate(simpleDateFormat.parse("09/08/15"))
                        .dailyRentalCharge(new BigDecimal("2.99"))
                        .chargeDays(3)
                        .preDiscountCharge(new BigDecimal("8.97"))
@@ -84,8 +84,8 @@ public class RentalServiceTest {
                        .toolType("Jackhammer")
                        .toolBrand("Ridgid")
                        .rentalDays(9)
-                       .checkoutDate(simpleDateFormat.parse("2015-07-02"))
-                       .dueDate(simpleDateFormat.parse("2015-07-10"))
+                       .checkoutDate(simpleDateFormat.parse("07/02/15"))
+                       .dueDate(simpleDateFormat.parse("07/10/15"))
                        .dailyRentalCharge(new BigDecimal("2.99"))
                        .chargeDays(6)
                        .preDiscountCharge(new BigDecimal("17.94"))
@@ -98,8 +98,8 @@ public class RentalServiceTest {
                        .toolType("Jackhammer")
                        .toolBrand("Ridgid")
                        .rentalDays(4)
-                       .checkoutDate(simpleDateFormat.parse("2020-07-02"))
-                       .dueDate(simpleDateFormat.parse("2020-07-05"))
+                       .checkoutDate(simpleDateFormat.parse("07/02/20"))
+                       .dueDate(simpleDateFormat.parse("07/05/20"))
                        .dailyRentalCharge(new BigDecimal("2.99"))
                        .chargeDays(1)
                        .preDiscountCharge(new BigDecimal("2.99"))
@@ -109,11 +109,11 @@ public class RentalServiceTest {
                        .build()};
 
         return Stream.of(
-                        Arguments.of("LADW", "2020-07-02", 3, 10, rentalAgreements[0]),
-                        Arguments.of("CHNS", "2015-07-02", 5, 25, rentalAgreements[1]),
-                        Arguments.of("JAKD", "2015-09-03", 6, 0, rentalAgreements[2]),
-                        Arguments.of("JAKR", "2015-07-02", 9, 0, rentalAgreements[3]),
-                        Arguments.of("JAKR", "2020-07-02", 4, 50, rentalAgreements[4]));
+                        Arguments.of("LADW", "07/02/20", 3, 10, rentalAgreements[0]),
+                        Arguments.of("CHNS", "07/02/15", 5, 25, rentalAgreements[1]),
+                        Arguments.of("JAKD", "09/03/15", 6, 0, rentalAgreements[2]),
+                        Arguments.of("JAKR", "07/02/15", 9, 0, rentalAgreements[3]),
+                        Arguments.of("JAKR", "07/02/20", 4, 50, rentalAgreements[4]));
     };
 
     /**
