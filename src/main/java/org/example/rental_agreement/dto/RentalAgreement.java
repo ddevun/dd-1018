@@ -7,6 +7,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * DTO for the rental agreement to be returned to the customer.
@@ -64,17 +65,17 @@ public class RentalAgreement {
             return false;
         }
         return this.toolCode.equals(rentalAgreement.getToolCode())
-                  && this.toolType.equals(rentalAgreement.getToolType())
-                  && this.toolBrand.equals(rentalAgreement.getToolBrand())
+                  && Objects.equals(this.toolType, rentalAgreement.getToolType())
+                  && Objects.equals(this.toolBrand, rentalAgreement.getToolBrand())
                   && this.rentalDays == rentalAgreement.getRentalDays()
-                  && this.checkoutDate.equals(rentalAgreement.getCheckoutDate())
-                  && this.dueDate.equals(rentalAgreement.getDueDate())
-                  && this.dailyRentalCharge.equals(rentalAgreement.getDailyRentalCharge())
+                  && Objects.equals(this.checkoutDate, rentalAgreement.getCheckoutDate())
+                  && Objects.equals(this.dueDate, rentalAgreement.getDueDate())
+                  && Objects.equals(this.dailyRentalCharge, rentalAgreement.getDailyRentalCharge())
                   && this.chargeDays == rentalAgreement.getChargeDays()
-                  && this.preDiscountCharge.equals(rentalAgreement.getPreDiscountCharge())
+                  && Objects.equals(this.preDiscountCharge, rentalAgreement.getPreDiscountCharge())
                   && this.discountPercent == rentalAgreement.discountPercent
-                  && this.discountAmount.equals(rentalAgreement.getDiscountAmount())
-                  && this.finalCharge.equals(rentalAgreement.getFinalCharge());
+                  && Objects.equals(this.discountAmount, rentalAgreement.getDiscountAmount())
+                  && Objects.equals(this.finalCharge, rentalAgreement.getFinalCharge());
     }
 
     @Override
