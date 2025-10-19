@@ -3,7 +3,7 @@ package org.example.rental_agreement.model;
 import lombok.Getter;
 
 /**
- * Enum for available tools
+ * Enum for available tools.
  */
 @Getter
 public enum Tool {

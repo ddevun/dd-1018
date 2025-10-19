@@ -1,6 +1,8 @@
-Q: `algorithm to determine labor day date`
+There were a handful of instances where I prompted AI. I find that AI does really well with simpler questions, more research topics than anything else. I needed clarification on a couple of the algorithms for the holidays, some clarification on BigDecimal rounding, and some clarification on Injecting mocks.
 
-A:
+Prompt: `algorithm to determine labor day date`
+
+Response:
 ```
 Here’s a simple algorithm to determine the date of Labor Day (U.S.) for any given year:
 Definition:
@@ -49,9 +51,9 @@ Labor Day = September 1, 2025
 ✅ Result: September 1, 2025
 ```
 
-Q: `algorithm to get number of weekend days in a date range`
+Prompt: `algorithm to get number of weekend days in a date range`
 
-A:
+Response:
 ```
 Here’s a clear and efficient algorithm to determine the number of weekend days (Saturdays and Sundays) between two dates (inclusive).
 
@@ -135,9 +137,9 @@ weekendDays = 4 + 1 = 5 weekend days
 ✅ Result: 5 weekend days
 ```
 
-Q: `Math.round a decimal to the nearest hundredth in java`
+Prompt: `Math.round a decimal to the nearest hundredth in java`
 
-A:
+Response:
 
 ```
 In Java, to round a decimal to the nearest hundredth (two decimal places), you can use several approaches. Here are the most common and reliable ones 👇
@@ -186,4 +188,87 @@ If you just need it formatted to two decimals (not mathematically rounded for fu
 
 double value = 3.14159;
 System.out.println(String.format("%.2f", value));  
+```
+Prompt: `java junit inject mocks`
+
+Response:
+```
+In JUnit (with Mockito), you use @Mock and @InjectMocks annotations to automatically create mock dependencies and inject them into the class under test. Here’s how it works:
+
+✅ Example Setup
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+class PaymentServiceTest {
+
+    @Mock
+    private PaymentGateway paymentGateway;
+
+    @InjectMocks
+    private PaymentService paymentService; // Class under test
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void testProcessPayment() {
+        when(paymentGateway.charge(anyDouble())).thenReturn(true);
+
+        boolean result = paymentService.processPayment(100.0);
+
+        assertTrue(result);
+        verify(paymentGateway).charge(100.0);
+    }
+}
+
+🧩 How it Works
+
+@Mock — creates a mock object of the given type (e.g., PaymentGateway).
+
+@InjectMocks — creates an instance of the class under test (e.g., PaymentService) and injects any fields annotated with @Mock that match by type.
+
+MockitoAnnotations.openMocks(this) — initializes the annotations before each test (or use @ExtendWith(MockitoExtension.class) for JUnit 5).
+
+✅ JUnit 5 Simplified Version
+
+Instead of calling MockitoAnnotations.openMocks, you can use the Mockito extension:
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+class PaymentServiceTest {
+
+    @Mock
+    private PaymentGateway paymentGateway;
+
+    @InjectMocks
+    private PaymentService paymentService;
+
+    @Test
+    void testProcessPayment() {
+        when(paymentGateway.charge(100.0)).thenReturn(true);
+
+        assertTrue(paymentService.processPayment(100.0));
+        verify(paymentGateway).charge(100.0);
+    }
+}
+
+⚙️ Injection Behavior
+
+@InjectMocks tries the following in order:
+
+Constructor injection (if there’s exactly one constructor).
+
+Setter injection (for any setter methods).
+
+Field injection (as a fallback).
 ```

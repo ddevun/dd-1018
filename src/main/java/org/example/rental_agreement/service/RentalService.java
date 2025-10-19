@@ -4,7 +4,6 @@ import org.example.rental_agreement.dto.RentalRequest;
 import org.example.rental_agreement.dto.RentalAgreement;
 import org.example.rental_agreement.model.Tool;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
@@ -17,23 +16,16 @@ import java.util.Date;
 public class RentalService {
     /**
      * Generates a rental agreement.
-     * @param rentalRequest The request from the client
-     * @return the rental agreement
+     * @param rentalRequest The request from the client.
+     * @return the rental agreement.
      * @throws IllegalArgumentException on bad inputs in the client request.
      */
     public RentalAgreement generateRentalAgreement(RentalRequest rentalRequest) throws IllegalArgumentException {
 
-        if (rentalRequest.getRentalDayCount() < 1) {
-            throw new IllegalArgumentException("Please select a rental day length of one day or greater.");
-        }
-        if (rentalRequest.getDiscountPercent() < 0 || rentalRequest.getDiscountPercent() > 100) {
-            throw new IllegalArgumentException("Please select a discount percentage between 0 and 100.");
-        }
-
         Tool tool = Tool.valueOf(rentalRequest.getToolCode());
 
         // Get the number of chargeable days
-        long chargeableDays = DateService.getChargeableDays(rentalRequest.getCheckoutDate(),
+        long chargeableDays = ChargingService.getChargeableDays(rentalRequest.getCheckoutDate(),
                 rentalRequest.getRentalDayCount(),
                 tool.getToolType().isWeekdayCharge(),
                 tool.getToolType().isWeekendCharge(),
@@ -48,9 +40,9 @@ public class RentalService {
         BigDecimal finalCharge = new BigDecimal(preDiscountChargeRounded.doubleValue() - discountAmountRounded.doubleValue())
                 .setScale(2, RoundingMode.HALF_UP);
 
-        Date lastDate = DateService.getEndDate(rentalRequest.getCheckoutDate(), rentalRequest.getRentalDayCount());
+        Date lastDate = ChargingService.getEndDate(rentalRequest.getCheckoutDate(), rentalRequest.getRentalDayCount());
         // We want the due date to be on the last day of the rental, not the day after
-        Date dueDate = DateService.addDays(lastDate, -1);
+        Date dueDate = ChargingService.addDays(lastDate, -1);
         RentalAgreement rentalAgreement = RentalAgreement.builder()
                 .toolCode(tool.toString())
                 .toolType(tool.getTypeName())
@@ -69,11 +61,23 @@ public class RentalService {
     }
 
     /**
-     * prints out the rental agreement to the console.
-     * @param rentalAgreement The rental agreement.
+     * Validates the fields of a RentalRequest.
+     * @param rentalRequest The RentalRequest to validate.
+     * @throws IllegalArgumentException if any of the fields are invalid.
      */
-    public static void outputRentalAgreement(RentalAgreement rentalAgreement) {
-        System.out.println(rentalAgreement);
-    }
 
+    public void valdidateRentalRequest(RentalRequest rentalRequest) throws IllegalArgumentException {
+        if (rentalRequest.getRentalDayCount() < 1) {
+            throw new IllegalArgumentException(("Error: The length of the rental must be at least one day."));
+        }
+        if (rentalRequest.getCheckoutDate() == null) {
+            throw new IllegalArgumentException("Error: You must include the checkout day in the request.");
+        }
+        if (rentalRequest.getDiscountPercent() < 0 || rentalRequest.getDiscountPercent() > 100) {
+            throw new IllegalArgumentException("Error: The discount percentage must be between 0 and 10. ");
+        }
+        if (rentalRequest.getToolCode() == null) {
+            throw new IllegalArgumentException("Error: You must include the code for the tool in the request.");
+        }
+    }
 }

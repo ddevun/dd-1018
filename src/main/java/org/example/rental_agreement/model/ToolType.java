@@ -1,9 +1,6 @@
 package org.example.rental_agreement.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 
 /**

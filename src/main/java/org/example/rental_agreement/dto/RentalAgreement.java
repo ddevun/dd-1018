@@ -1,7 +1,7 @@
 package org.example.rental_agreement.dto;
 
 
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * DAO for the rental agreement to be returned to the customer.
+ * DTO for the rental agreement to be returned to the customer.
  */
 @Builder
 @Getter
@@ -21,7 +21,9 @@ public class RentalAgreement {
     String toolType;
     String toolBrand;
     long rentalDays;
+    @JsonFormat(pattern="MM/dd/yy")
     Date checkoutDate;
+    @JsonFormat(pattern="MM/dd/yy")
     Date dueDate;
     BigDecimal dailyRentalCharge;
     long chargeDays;
@@ -47,6 +49,10 @@ public class RentalAgreement {
         builder.append(String.format("Discount amount: $%s\n", discountAmount.toString()));
         builder.append(String.format("Final charge: $%s\n", finalCharge.toString()));
         return builder.toString();
+    }
+
+    public void print() {
+        System.out.println(this);
     }
 
     @Override
@@ -79,14 +85,14 @@ public class RentalAgreement {
                 + (toolType == null? 0: toolType.hashCode())
                 + (toolBrand == null? 0: toolBrand.hashCode())
                 + rentalDays
-                + checkoutDate.hashCode()
-                + dueDate.hashCode()
-                + dailyRentalCharge.hashCode()
+                + (checkoutDate == null? 0:checkoutDate.hashCode())
+                + (dueDate == null? 0:dueDate.hashCode())
+                + (dailyRentalCharge == null? 0: dailyRentalCharge.hashCode())
                 + chargeDays
-                + preDiscountCharge.hashCode()
+                + (preDiscountCharge == null? 0: preDiscountCharge.hashCode())
                 + discountPercent
-                + discountAmount.hashCode()
-                + finalCharge.hashCode());
+                + (discountAmount == null? 0: discountAmount.hashCode())
+                + (finalCharge == null? 0: finalCharge.hashCode()));
 
     }
 

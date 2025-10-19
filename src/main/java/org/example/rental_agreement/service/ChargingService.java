@@ -9,13 +9,13 @@ import java.util.List;
 /**
  * Service to calculate the chargeable days.
  */
-public class DateService {
+public class ChargingService {
 
     /**
      * Adds days to the given date.
-     * @param date The date to add to
-     * @param days The number of days to add
-     * @return The new date
+     * @param date The date to add to.
+     * @param days The number of days to add.
+     * @return The new date.
      */
     public static Date addDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
@@ -25,20 +25,20 @@ public class DateService {
     }
 
     /**
-     * Gets the end date given a length
-     * @param startDate The date to start from
-     * @param length the number of days
-     * @return The end date in a Date object
+     * Gets the end date given a length.
+     * @param startDate The date to start from.
+     * @param length the number of days.
+     * @return The end date in a Date object.
      */
     public static Date getEndDate(Date startDate, int length) {
         return getEndDateCal(startDate, length).getTime();
     }
 
     /**
-     * Gets the end date given a length
-     * @param startDate The date to start from
-     * @param length The number of days
-     * @return The end date in a Calendar object
+     * Gets the end date given a length.
+     * @param startDate The date to start from.
+     * @param length The number of days.
+     * @return The end date in a Calendar object.
      */
     public static Calendar getEndDateCal(Date startDate, int length) {
         Calendar calEnd = Calendar.getInstance();
@@ -48,10 +48,10 @@ public class DateService {
     }
 
 
-    /** Converts a Date object to a Calendar object
+    /** Converts a Date object to a Calendar object.
      *
-     * @param date The given date
-     * @return The date in a Calendar object
+     * @param date The given date.
+     * @return The date in a Calendar object.
      */
    public static Calendar dateToCal(Date date) {
         Calendar cal = Calendar.getInstance();
@@ -61,11 +61,11 @@ public class DateService {
 
     /**
      * Gets the number of chargeable days.
-     * @param startDate The date to start from
-     * @param length The number of days
-     * @param weekdayCharge true if there is a charge for weekdays
-     * @param weekendCharge true if there is a charge for weekends
-     * @param holidayCharge true if there is a charge for holidays
+     * @param startDate The date to start from.
+     * @param length The number of days.
+     * @param weekdayCharge true if there is a charge for weekdays.
+     * @param weekendCharge true if there is a charge for weekends.
+     * @param holidayCharge true if there is a charge for holidays.
      * @return the number of chargeable days.
      */
     public static long getChargeableDays(Date startDate, int length, boolean weekdayCharge, boolean weekendCharge, boolean holidayCharge) {
@@ -119,9 +119,9 @@ public class DateService {
     }
 
     /**
-     * Returns if the date falls on a weekend
-     * @param date the given date
-     * @return true if the date falls on a weekend
+     * Returns if the date falls on a weekend.
+     * @param date the given date.
+     * @return true if the date falls on a weekend.
      */
     private static boolean isWeekend(Date date) {
         int dow = dateToCal(date).get(Calendar.DAY_OF_WEEK);
@@ -129,10 +129,10 @@ public class DateService {
     }
 
     /**
-     * Gets the number of weekend days in a period
-     * @param calStart the start of the period
-     * @param calEnd the end of the period
-     * @return The number of weekend days
+     * Gets the number of weekend days in a period.
+     * @param calStart the start of the period.
+     * @param calEnd the end of the period.
+     * @return The number of weekend days.
      */
     private static int getWeekendDays(Calendar calStart, Calendar calEnd) {
         long totalDays = Duration.between(calStart.toInstant(), calEnd.toInstant()).toDays();
@@ -154,8 +154,8 @@ public class DateService {
 
     /**
      * Creates a list of holiday days. Currently only checks Labor day and Independence day.
-     * @param year The year of the holiday
-     * @return a list of holiday dates
+     * @param year The year of the holiday.
+     * @return a list of holiday dates.
      */
     public static List<Date> getHolidays(int year) {
         List<Date> holidays = new ArrayList<>();

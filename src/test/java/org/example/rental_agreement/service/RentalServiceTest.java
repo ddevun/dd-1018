@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.stream.Stream;
 
 /**
- * Tests for Rental Service
+ * Tests for Rental Service.
  */
 public class RentalServiceTest {
 
@@ -22,8 +22,8 @@ public class RentalServiceTest {
 
     /**
      * Test data with bad rental request inputs.
-     * @return
-     * @throws ParseException
+     * @return a stream of test data.
+     * @throws ParseException if the date cannot be parsed.
      */
     static Stream<Arguments> badTestData() throws ParseException {
        return Stream.of(Arguments.of("JAKR", "09/03/15", 5, 101),
@@ -133,7 +133,7 @@ public class RentalServiceTest {
                .discountPercent(discountPercent)
                .build();
 
-       Assertions.assertThrows(IllegalArgumentException.class, () -> rentalService.generateRentalAgreement(rentalRequest));
+       Assertions.assertThrows(IllegalArgumentException.class, () -> rentalService.valdidateRentalRequest(rentalRequest));
    }
 
     /**
@@ -147,7 +147,7 @@ public class RentalServiceTest {
      */
     @ParameterizedTest
     @MethodSource("testData")
-    public void testRentalAgreement(String toolCode, String date, int rentalDayCount, int discountPercent, RentalAgreement rentalAgreement) throws ParseException {
+    public void testRentalAgreement_happyPath(String toolCode, String date, int rentalDayCount, int discountPercent, RentalAgreement rentalAgreement) throws ParseException {
 
         RentalRequest rentalRequest = RentalRequest.builder()
                 .toolCode(toolCode)
@@ -157,7 +157,7 @@ public class RentalServiceTest {
                 .build();
 
         RentalAgreement response = rentalService.generateRentalAgreement(rentalRequest);
-        RentalService.outputRentalAgreement(response);
+        response.print();
         Assertions.assertEquals(rentalAgreement, response);
 
     }
