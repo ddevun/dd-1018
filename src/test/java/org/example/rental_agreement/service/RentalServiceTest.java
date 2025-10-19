@@ -133,7 +133,7 @@ public class RentalServiceTest {
                .discountPercent(discountPercent)
                .build();
 
-       Assertions.assertThrows(IllegalArgumentException.class, () -> rentalService.valdidateRentalRequest(rentalRequest));
+       Assertions.assertThrows(IllegalArgumentException.class, () -> rentalService.generateRentalAgreement(rentalRequest));
    }
 
     /**

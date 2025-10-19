@@ -21,7 +21,7 @@ public class RentalService {
      * @throws IllegalArgumentException on bad inputs in the client request.
      */
     public RentalAgreement generateRentalAgreement(RentalRequest rentalRequest) throws IllegalArgumentException {
-
+        valdidateRentalRequest(rentalRequest);
         Tool tool = Tool.valueOf(rentalRequest.getToolCode());
 
         // Get the number of chargeable days
@@ -74,7 +74,7 @@ public class RentalService {
             throw new IllegalArgumentException("Error: You must include the checkout day in the request.");
         }
         if (rentalRequest.getDiscountPercent() < 0 || rentalRequest.getDiscountPercent() > 100) {
-            throw new IllegalArgumentException("Error: The discount percentage must be between 0 and 10. ");
+            throw new IllegalArgumentException("Error: The discount percentage must be between 0 and 100.");
         }
         if (rentalRequest.getToolCode() == null) {
             throw new IllegalArgumentException("Error: You must include the code for the tool in the request.");

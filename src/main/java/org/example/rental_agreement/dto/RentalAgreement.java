@@ -35,7 +35,7 @@ public class RentalAgreement {
     @Override
     public String toString() {
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder("\n");
         builder.append(String.format("Tool code: %s\n", toolCode));
         builder.append(String.format("Tool type: %s\n", toolType));
         builder.append(String.format("Tool brand: %s\n", toolBrand));

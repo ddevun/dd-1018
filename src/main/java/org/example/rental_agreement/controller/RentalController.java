@@ -27,12 +27,9 @@ public class RentalController {
     @PostMapping("/rental")
     public String rental(@RequestBody RentalRequest rentalRequest) {
         try {
-            rentalService.valdidateRentalRequest(rentalRequest);
+            return rentalService.generateRentalAgreement(rentalRequest).toString();
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-        try {
-            return rentalService.generateRentalAgreement(rentalRequest).toString();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "We apologize, but there was an error. Please try your request again.");
         }

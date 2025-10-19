@@ -37,7 +37,6 @@ public class RentalControllerTest {
 
     @Test
     public void testRentalController_badValidation() {
-        Mockito.doThrow(new IllegalArgumentException()).when(rentalService).valdidateRentalRequest(rentalRequest);
         Assertions.assertThrows(ResponseStatusException.class, () -> rentalController.rental(rentalRequest));
     }
 }
